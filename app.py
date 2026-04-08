@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask import jsonify
 import psycopg2
 import os
+import traceback
 
 app = Flask(__name__, template_folder='templates')
 
@@ -64,7 +65,12 @@ def eliminar_registro(dni):
     conn.close()
     return redirect(url_for('administrar'))
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    tb = traceback.format_exc()
+    print("ERROR:", tb)
+    return f"<pre>ERROR:\n{tb}</pre>", 500
+
 if __name__ == '__main__':
-    #Esto es nuevo
-    port = int(os.environ.get('PORT',5000))    
-    app.run(host='0.0.0.0', port=port, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
