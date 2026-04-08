@@ -13,12 +13,10 @@ DB_PASSWORD = 'xkmD4V6rmoGNJ27uGLq1k76ynORQ8HTd'
 
 
 def conectar_db():
-    try:
-        conn = psycopg2.connect(
-            dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST)
-        return conn
-    except psycopg2.Error as e:
-        print("Error al conectar a la base de datos:", e)
+    conn = psycopg2.connect(
+        dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST,
+        sslmode='require')
+    return conn
 
 
 def crear_persona(dni, nombre, apellido, direccion, telefono):
@@ -30,10 +28,9 @@ def crear_persona(dni, nombre, apellido, direccion, telefono):
     conn.close()
 
 def obtener_registros():
-    conn = psycopg2.connect(
-        dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST)
-    cursor=conn.cursor()
-    cursor.execute("SELECT * FROM personas order by apellido")
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM personas ORDER BY apellido")
     registros = cursor.fetchall()
     conn.close()
     return registros
@@ -60,9 +57,8 @@ def administrar():
 
 @app.route('/eliminar/<dni>', methods=['POST'])
 def eliminar_registro(dni):
-    conn = psycopg2.connect(
-        dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST)
-    cursor=conn.cursor()
+    conn = conectar_db()
+    cursor = conn.cursor()
     cursor.execute("DELETE FROM personas WHERE dni = %s", (dni,))
     conn.commit()
     conn.close()
