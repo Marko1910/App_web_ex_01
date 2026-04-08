@@ -7,16 +7,16 @@ import traceback
 app = Flask(__name__, template_folder='templates')
 
 # Configuración de la base de datos
-DB_HOST = 'dpg-cr6bdj1u0jms73bn1teg-a.oregon-postgres.render.com'
-DB_NAME = 'dbtest_h0hy'
-DB_USER = 'dbtest_h0hy_user'
-DB_PASSWORD = 'xkmD4V6rmoGNJ27uGLq1k76ynORQ8HTd'
+DB_HOST = 'dpg-d7bcj9ua2pns7381rhn0-a'
+DB_NAME = 'dbexamen_ur9z'
+DB_USER = 'dbexamen_ur9z_user'
+DB_PASSWORD = 'R5fd8WNkY8uxYv7azKw5ILQZ62sKOb1H'
 
 
 def conectar_db():
     conn = psycopg2.connect(
         dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST,
-        sslmode='require')
+        sslmode='disable')
     return conn
 
 
