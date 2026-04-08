@@ -20,6 +20,24 @@ def conectar_db():
     return conn
 
 
+def init_db():
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS personas (
+            id SERIAL PRIMARY KEY,
+            dni VARCHAR(20) NOT NULL,
+            nombre VARCHAR(100) NOT NULL,
+            apellido VARCHAR(100) NOT NULL,
+            direccion TEXT,
+            telefono VARCHAR(20)
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
+
 def crear_persona(dni, nombre, apellido, direccion, telefono):
     conn = conectar_db()
     cursor = conn.cursor()
